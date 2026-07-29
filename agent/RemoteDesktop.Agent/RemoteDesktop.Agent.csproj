@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows10.0.17763</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- UseWindowsForms مفعّل عشان نستخدم System.Drawing لالتقاط الشاشة بسهولة -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- مكتبة WebRTC للـ .NET -->
+    <PackageReference Include="SIPSorcery" Version="6.*" />
+    <PackageReference Include="SIPSorceryMedia.Encoders" Version="1.*" />
+    <PackageReference Include="SIPSorceryMedia.Windows" Version="1.*" />
+  </ItemGroup>
+
+</Project>

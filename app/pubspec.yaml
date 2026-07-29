@@ -1,0 +1,23 @@
+name: remote_desktop_app
+description: تطبيق التحكم عن بعد بالكمبيوتر عبر الجوال
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc: ^1.1.0      # لدعم WebRTC (بث الشاشة + قناة البيانات)
+  web_socket_channel: ^2.4.0   # اتصال WebSocket بسيرفر الإشارات (signaling)
+  provider: ^6.1.2             # إدارة الحالة (state management) بسيطة
+  shared_preferences: ^2.2.3   # حفظ عنوان السيرفر وكود الاقتران محلياً
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
