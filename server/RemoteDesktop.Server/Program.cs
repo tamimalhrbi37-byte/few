@@ -67,6 +67,19 @@ public class PairSessionManager
     private PairSession GetOrCreate(string pairCode) =>
         _sessions.GetOrAdd(pairCode, _ => new PairSession());
 
+    private static string ExtractMessageType(string json)
+    {
+        try
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            return doc.RootElement.TryGetProperty("Type", out var t) ? t.GetString() ?? "?" : "?";
+        }
+        catch
+        {
+            return "?";
+        }
+    }
+
     public async Task HandleConnectionAsync(string pairCode, string role, WebSocket socket, CancellationToken ct)
     {
         var session = GetOrCreate(pairCode);
@@ -102,11 +115,17 @@ public class PairSessionManager
 
                 // نمرر الرسالة للطرف الآخر فقط (agent <-> app)، السيرفر لا يفهم محتواها
                 var target = role == "agent" ? session.AppSocket : session.AgentSocket;
+                var msgType = ExtractMessageType(message);
 
                 if (target is { State: WebSocketState.Open })
                 {
                     var bytes = Encoding.UTF8.GetBytes(message);
                     await target.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, ct);
+                    Console.WriteLine($"[Relay] {role} -> {(role == "agent" ? "app" : "agent")} : type={msgType} ✅ تم التسليم");
+                }
+                else
+                {
+                    Console.WriteLine($"[Relay] {role} -> {(role == "agent" ? "app" : "agent")} : type={msgType} ❌ الطرف الآخر غير متصل - الرسالة ضاعت!");
                 }
             }
         }
