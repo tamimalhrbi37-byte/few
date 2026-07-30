@@ -34,3 +34,4 @@ C:\Users\Administrator\Downloads\remote-desktop-system\agent\RemoteDesktop.Agent
 C:\Users\Administrator\Downloads\remote-desktop-system\agent\RemoteDesktop.Agent\obj\Debug\net8.0-windows10.0.17763\RemoteDesktop.Agent.pdb
 C:\Users\Administrator\Downloads\remote-desktop-system\agent\RemoteDesktop.Agent\obj\Debug\net8.0-windows10.0.17763\RemoteDesktop.Agent.genruntimeconfig.cache
 C:\Users\Administrator\Downloads\remote-desktop-system\agent\RemoteDesktop.Agent\obj\Debug\net8.0-windows10.0.17763\ref\RemoteDesktop.Agent.dll
+C:\Users\Administrator\Downloads\remote-desktop-system\agent\RemoteDesktop.Agent\obj\Debug\net8.0-windows10.0.17763\RemoteDesktop.Agent.sourcelink.json

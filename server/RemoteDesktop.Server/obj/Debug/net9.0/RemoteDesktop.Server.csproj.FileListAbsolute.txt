@@ -23,3 +23,4 @@ C:\Users\Administrator\Downloads\remote-desktop-system\server\RemoteDesktop.Serv
 C:\Users\Administrator\Downloads\remote-desktop-system\server\RemoteDesktop.Server\obj\Debug\net9.0\RemoteDesktop.Server.pdb
 C:\Users\Administrator\Downloads\remote-desktop-system\server\RemoteDesktop.Server\obj\Debug\net9.0\RemoteDesktop.Server.genruntimeconfig.cache
 C:\Users\Administrator\Downloads\remote-desktop-system\server\RemoteDesktop.Server\obj\Debug\net9.0\ref\RemoteDesktop.Server.dll
+C:\Users\Administrator\Downloads\remote-desktop-system\server\RemoteDesktop.Server\obj\Debug\net9.0\RemoteDesktop.Server.sourcelink.json
