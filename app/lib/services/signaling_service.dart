@@ -21,17 +21,24 @@ class SignalingService {
 
     _channel = WebSocketChannel.connect(uri);
 
+    // ننتظر تأكيد نجاح الاتصال فعلياً (handshake) بدل ما نفترض نجاحه فوراً -
+    // لو فشل (IP غلط، فايروول، السيرفر مو شغّال...) بيرمي استثناء هنا مباشرة
+    await _channel!.ready;
+    print('[Signaling] تم الاتصال بالسيرفر بنجاح ($serverUrl)');
+
     _channel!.stream.listen(
       (raw) {
+        print('[Signaling] رسالة واردة: $raw');
         final data = jsonDecode(raw as String) as Map<String, dynamic>;
         _messageController.add(data);
       },
-      onError: (error) => print('خطأ في اتصال الإشارات: $error'),
-      onDone: () => print('انقطع الاتصال بسيرفر الإشارات'),
+      onError: (error) => print('[Signaling] خطأ في اتصال الإشارات: $error'),
+      onDone: () => print('[Signaling] انقطع الاتصال بسيرفر الإشارات'),
     );
   }
 
   void send(Map<String, dynamic> message) {
+    print('[Signaling] إرسال: ${jsonEncode(message)}');
     _channel?.sink.add(jsonEncode(message));
   }
 
