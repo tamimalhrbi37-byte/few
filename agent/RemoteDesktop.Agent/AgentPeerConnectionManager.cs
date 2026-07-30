@@ -24,12 +24,32 @@ public class AgentPeerConnectionManager
 
     public async Task HandleSignalingMessageAsync(string rawMessage)
     {
-        var msg = JsonSerializer.Deserialize<SignalMessage>(rawMessage);
-        if (msg is null) return;
+        Console.WriteLine($"[Signaling] رسالة واردة: {rawMessage}");
 
+        var msg = JsonSerializer.Deserialize<SignalMessage>(rawMessage, JsonOptions.Default);
+        if (msg is null)
+        {
+            Console.WriteLine("[Signaling] فشل تحويل الرسالة لـ JSON صالح.");
+            return;
+        }
+
+        try
+        {
+            await ProcessMessageAsync(msg);
+        }
+        catch (Exception ex)
+        {
+            // نطبع الخطأ كامل بدل ما نخليه يختفي بصمت - هذا أهم سطر للتشخيص
+            Console.WriteLine($"[خطأ] فشل معالجة رسالة {msg.Type}: {ex}");
+        }
+    }
+
+    private async Task ProcessMessageAsync(SignalMessage msg)
+    {
         switch (msg.Type)
         {
             case "offer":
+                Console.WriteLine("[Signaling] استلمت offer، جاري إنشاء الاتصال...");
                 await HandleOfferAsync(msg.Sdp!);
                 break;
 
@@ -57,11 +77,15 @@ public class AgentPeerConnectionManager
         var answer = _peerConnection.createAnswer();
         await _peerConnection.setLocalDescription(answer);
 
+        Console.WriteLine("[Signaling] تم إنشاء answer، جاري إرساله...");
+
         await _signaling.SendAsync(JsonSerializer.Serialize(new SignalMessage
         {
             Type = "answer",
             Sdp = answer.sdp
-        }));
+        }, JsonOptions.Default));
+
+        Console.WriteLine("[Signaling] تم إرسال answer.");
     }
 
     private RTCPeerConnection CreatePeerConnection()
@@ -90,7 +114,7 @@ public class AgentPeerConnectionManager
                 Candidate = candidate.candidate,
                 SdpMid = candidate.sdpMid,
                 SdpMLineIndex = candidate.sdpMLineIndex
-            }));
+            }, JsonOptions.Default));
         };
 
         pc.onconnectionstatechange += state =>
@@ -142,7 +166,7 @@ public class AgentPeerConnectionManager
         ControlCommand? cmd;
         try
         {
-            cmd = JsonSerializer.Deserialize<ControlCommand>(json);
+            cmd = JsonSerializer.Deserialize<ControlCommand>(json, JsonOptions.Default);
         }
         catch
         {
