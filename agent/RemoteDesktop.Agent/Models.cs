@@ -1,4 +1,21 @@
+using System.Text.Json;
+
 namespace RemoteDesktop.Agent;
+
+/// <summary>
+/// إعدادات JSON مشتركة تُستخدم بكل عمليات التحويل (Serialize/Deserialize) في المشروع.
+/// مهم جداً: نستخدم camelCase عشان يتطابق مع تطبيق Flutter، اللي يرسل ويتوقع مفاتيح
+/// JSON بحرف صغير أول (مثل "type" مو "Type"). System.Text.Json حساس لحالة الأحرف
+/// افتراضياً، فبدون هذا الإعداد الرسائل توصل لكن كل الحقول تطلع فاضية (null) بصمت.
+/// </summary>
+public static class JsonOptions
+{
+    public static readonly JsonSerializerOptions Default = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true
+    };
+}
 
 /// <summary>رسالة إشارات WebRTC (offer / answer / ice-candidate) تُمرَّر عبر سيرفر الـ Relay.</summary>
 public class SignalMessage
