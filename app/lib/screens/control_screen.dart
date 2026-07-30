@@ -46,9 +46,21 @@ class _ControlScreenState extends State<ControlScreen> {
   }
 
   Future<void> _start() async {
-    await _webrtc.init();
-    await _signaling.connect(serverUrl: widget.serverUrl, pairCode: widget.pairCode);
-    await _webrtc.connect();
+    try {
+      debugPrint('[App] تهيئة WebRTC...');
+      await _webrtc.init();
+
+      debugPrint('[App] الاتصال بالسيرفر: ${widget.serverUrl} كود=${widget.pairCode}');
+      await _signaling.connect(serverUrl: widget.serverUrl, pairCode: widget.pairCode);
+
+      debugPrint('[App] إنشاء عرض WebRTC (offer)...');
+      await _webrtc.connect();
+
+      debugPrint('[App] تم إرسال الـ offer، بانتظار رد الكمبيوتر...');
+    } catch (e, st) {
+      debugPrint('[App] خطأ فادح أثناء الاتصال: $e\n$st');
+      if (mounted) setState(() => _status = 'خطأ: $e');
+    }
   }
 
   @override
